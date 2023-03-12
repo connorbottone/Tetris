@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 
 import { createStage, checkCollision } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
+import { StyledHeader } from './styles/StyledHome';
 
 // Custom Hooks
 import { useInterval } from '../hooks/useInterval';
@@ -104,12 +105,14 @@ const Tetris = () => {
   };
 
   return (
+    <div>
+  
     <StyledTetrisWrapper
       role="button"
       tabIndex="0"
       onKeyDown={e => move(e)}
       onKeyUp={keyUp}
-    >
+    >  <StyledHeader>TETROMANIA</StyledHeader>
       <StyledTetris>
         <Stage stage={stage} />
         <aside>
@@ -127,7 +130,7 @@ const Tetris = () => {
         </aside>
       </StyledTetris>
       
-    </StyledTetrisWrapper>
+    </StyledTetrisWrapper></div>
   );
 };
 

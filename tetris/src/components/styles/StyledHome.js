@@ -58,7 +58,7 @@ export const StyledHomeGames = styled.div`
   text-shadow: 0px 0px 10px #000, 0px 0px 20px #000, 0px 0px 30px #000;
   z-index: 1;
   margin-left: 26.5vw;
-    margin-top: -1vh;
+  margin-top: -4vh;
   
   &:after {
     content: 'TETROMANIA';
@@ -69,4 +69,26 @@ export const StyledHomeGames = styled.div`
     text-shadow: none;
     z-index: -1;
   }
+`;
+export  const StyledNav = styled.h1`
+position: relative;
+color: #FFF;
+font-size: 22px;
+font-weight: bold;
+text-transform: uppercase;
+text-shadow: 0px 0px 10px #000, 0px 0px 20px #000, 0px 0px 30px #000;
+z-index: 0;
+margin-left: 2.5vw;
+cursor: pointer;
+
+
+&:after {
+  content: 'HighScores';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  color: #666;
+  text-shadow: none;
+  z-index: -1;
+}
 `;
