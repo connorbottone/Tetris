@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import bgImage from '../../img/bg.png';
+import classic from '../../img/tetris.PNG';
 export const StyledHome = styled.div`
   display: flex;
   align-items: flex-start;
@@ -10,7 +11,7 @@ export const StyledHome = styled.div`
 border: 4px solid #333;
 border-radius: 20px;
 color: #999;
-background: url(${bgImage}) #000;
+background: url(${classic}) #000;
  
 `;
 
@@ -48,3 +49,24 @@ export const StyledHomeGames = styled.div`
         outline: none;
         cursor: pointer;
       `;
+    export  const StyledHeader = styled.h1`
+  position: relative;
+  color: #FFF;
+  font-size: 72px;
+  font-weight: bold;
+  text-transform: uppercase;
+  text-shadow: 0px 0px 10px #000, 0px 0px 20px #000, 0px 0px 30px #000;
+  z-index: 1;
+  margin-left: 26.5vw;
+    margin-top: -1vh;
+  
+  &:after {
+    content: 'TETROMANIA';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    color: #666;
+    text-shadow: none;
+    z-index: -1;
+  }
+`;

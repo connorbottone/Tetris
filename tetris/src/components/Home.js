@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyledHome, StyledHomeWrapper,StyledHomeGames,StyledButton } from './styles/StyledHome'
+import { StyledHome, StyledHomeWrapper,StyledHomeGames,StyledHeader,StyledButton } from './styles/StyledHome'
 
 export default function Home({setCurrentPage}) {
   const tetris = () => {
@@ -9,7 +9,8 @@ export default function Home({setCurrentPage}) {
     return (
     <StyledHomeWrapper>
         <StyledHomeGames>
-    <StyledHome style={{ marginTop: '90px' }}>
+            <StyledHeader>TETROMANIA</StyledHeader>
+    <StyledHome >
         
         <StyledButton onClick={tetris}>Play Tetris</StyledButton>
     </StyledHome>
