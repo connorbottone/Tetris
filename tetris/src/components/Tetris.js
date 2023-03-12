@@ -123,6 +123,7 @@ const Tetris = () => {
             </div>
           )}
           <StartButton callback={startGame} /><HighScores highScores={highScores} />
+        
         </aside>
       </StyledTetris>
       
