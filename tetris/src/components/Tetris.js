@@ -4,6 +4,8 @@ import { createStage, checkCollision } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
 import { StyledHeader } from './styles/StyledHome';
 
+import jazz from '../audio/jazz.mp3';
+
 // Custom Hooks
 import { useInterval } from '../hooks/useInterval';
 import { usePlayer } from '../hooks/usePlayer';
@@ -53,6 +55,7 @@ const Tetris = () => {
     setLevel(0);
     setRows(0);
     setGameOver(false);
+    new Audio(jazz).play();
   };
 
   const drop = () => {
@@ -112,7 +115,7 @@ const Tetris = () => {
       tabIndex="0"
       onKeyDown={e => move(e)}
       onKeyUp={keyUp}
-    >  <StyledHeader>TETROMANIA</StyledHeader>
+    >  <StyledHeader style={{ marginTop: '20px' }}>TETROMANIA</StyledHeader>
       <StyledTetris>
         <Stage stage={stage} />
         <aside>
