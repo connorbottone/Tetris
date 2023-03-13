@@ -18,6 +18,7 @@ import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
 import HighScores from './HighScores';
+import  MultiplayerStage  from './MultiplayerStage';
 
 const Tetris = () => {
   const [currentSong, setCurrentSong] = useState(jazz);
@@ -151,6 +152,7 @@ const Tetris = () => {
     >  <StyledHeader style={{ marginTop: '20px' }}>TETROMANIA</StyledHeader>
       <StyledTetris>
         <Stage stage={stage} />
+       
         
         <aside>
           {gameOver ? (
@@ -160,12 +162,17 @@ const Tetris = () => {
               <Display text={`Score: ${score}`} />
               <Display text={`rows: ${rows}`} />
               <Display text={`Level: ${level}`} />
-            </div>
+            </div> 
           )}
+         
           <StartButton callback={startGame} />
           <StyledMuteButton onClick={stopMusic}> {playing ? "Mute" : "UnMute"}</StyledMuteButton>
         
-        </aside>
+        </aside> <MultiplayerStage stage={stage} />
+        <div>
+              <Display text={`Score: ${score}`} />
+             
+            </div> 
       </StyledTetris>
       
     </StyledTetrisWrapper></div>
