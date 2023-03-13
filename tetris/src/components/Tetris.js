@@ -24,6 +24,7 @@ const Tetris = () => {
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [highScores, setHighScores] = useState([]);
+  const [playing, setplaying] = useState(true);
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
@@ -66,10 +67,18 @@ const Tetris = () => {
   const audioRef = useRef(new Audio(jazz));
 
   const stopMusic = () => {
+    if (playing === true) {
     audioRef.current.pause();
     audioRef.current.currentTime = 0;
     console.log("music stopped");
+  }
+  else {
+    audioRef.current.play();
+    console.log("music playing");
+  }   
+  setplaying(!playing);
   };
+  
   const startGame = () => {
     // Reset everything
     setStage(createStage());
