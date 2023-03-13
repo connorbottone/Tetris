@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState,useRef } from 'react';
+import styled from 'styled-components';
 
 import { createStage, checkCollision } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
@@ -19,6 +20,7 @@ import StartButton from './StartButton';
 import HighScores from './HighScores';
 
 const Tetris = () => {
+  const [currentSong, setCurrentSong] = useState(jazz);
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [highScores, setHighScores] = useState([]);
@@ -30,6 +32,22 @@ const Tetris = () => {
   );
 
   console.log('re-render');
+  const StyledMuteButton = styled.button`
+  box-sizing: border-box;
+
+  margin: 0 0 20px 0;
+  padding: 20px;
+  min-height: 30px;
+  width: 100%;
+  border-radius: 20px;
+  border: none;
+  color: white;
+  background: #745;
+  font-family: Pixel, Arial, Helvetica, sans-serif;
+  font-size: 1rem;
+  outline: none;
+  cursor: pointer;
+`;
 
   const movePlayer = dir => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
@@ -45,7 +63,13 @@ const Tetris = () => {
       }
     }
   };
+  const audioRef = useRef(new Audio(jazz));
 
+  const stopMusic = () => {
+    audioRef.current.pause();
+    audioRef.current.currentTime = 0;
+    console.log("music stopped");
+  };
   const startGame = () => {
     // Reset everything
     setStage(createStage());
@@ -55,7 +79,7 @@ const Tetris = () => {
     setLevel(0);
     setRows(0);
     setGameOver(false);
-    new Audio(jazz).play();
+    audioRef.current.play();
   };
 
   const drop = () => {
@@ -128,7 +152,8 @@ const Tetris = () => {
               <Display text={`Level: ${level}`} />
             </div>
           )}
-          <StartButton callback={startGame} /><HighScores highScores={highScores} />
+          <StartButton callback={startGame} />
+          <StyledMuteButton onClick={stopMusic}>Mute</StyledMuteButton>
         
         </aside>
       </StyledTetris>
