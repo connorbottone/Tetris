@@ -13,6 +13,7 @@ import { usePlayer } from '../hooks/usePlayer';
 import { useStage } from '../hooks/useStage';
 import { useGameStatus } from '../hooks/useGameStatus';
 
+import { useIntervalTwo } from '../hooks/useIntervalTwo';
 import { usePlayerTwo } from '../hooks/usePlayerTwo';
 import { useStageTwo } from '../hooks/useStageTwo';
 import { useGameStatusTwo } from '../hooks/useGameStatusTwo';
@@ -93,7 +94,7 @@ const Tetris = () => {
   };
 
   const keyUpTwo = ({ keyCode }) => {
-    if (!gameOver) {
+    if (!gameOverTwo) {
       // Activate the interval again when user releases down arrow.
       if (keyCode === 83) {
         setDropTimeTwo(1000 / (levelTwo + 1));
@@ -190,7 +191,9 @@ const Tetris = () => {
   };
 
   const dropTwo = () => {
-    // Increase level when player has cleared 10 rows
+    if (gameOverTwo) {
+      return;
+    }
     if (rows > (levelTwo + 1) * 10) {
       setLevelTwo(prev => prev + 1);
       // Also increase speed
@@ -204,6 +207,7 @@ const Tetris = () => {
       if (playerTwo.pos.y < 1) {
         console.log('GAME OVER!!!');
         setGameOverTwo(true);
+        
         setDropTimeTwo(null);
         setHighScoresTwo(prevScores => [...prevScores, scoreTwo]);
       }
@@ -220,7 +224,7 @@ const Tetris = () => {
 
   // This one starts the game
   // Custom hook by Dan Abramov
-  useInterval(() => {
+  useIntervalTwo(() => {
     dropTwo();
   }, dropTimeTwo);
 
