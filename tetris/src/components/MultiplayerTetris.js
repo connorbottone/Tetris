@@ -1,6 +1,6 @@
 import React, { useState,useRef } from 'react';
 import styled from 'styled-components';
-
+import { createStageTwo, checkCollisionTwo } from '../gameHelpersTwo';
 import { createStage, checkCollision } from '../gameHelpers';
 import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
 import { StyledHeader } from './styles/StyledHome';
@@ -13,12 +13,17 @@ import { usePlayer } from '../hooks/usePlayer';
 import { useStage } from '../hooks/useStage';
 import { useGameStatus } from '../hooks/useGameStatus';
 
+import { usePlayerTwo } from '../hooks/usePlayerTwo';
+import { useStageTwo } from '../hooks/useStageTwo';
+import { useGameStatusTwo } from '../hooks/useGameStatusTwo';
+
 // Components
 import Stage from './Stage';
 import Display from './Display';
 import StartButton from './StartButton';
 import HighScores from './HighScores';
 import  MultiplayerStage  from './MultiplayerStage';
+
 
 const Tetris = () => {
   const [currentSong, setCurrentSong] = useState(jazz);
@@ -32,6 +37,21 @@ const Tetris = () => {
   const [score, setScore, rows, setRows, level, setLevel] = useGameStatus(
     rowsCleared
   );
+
+
+ 
+  const [dropTimeTwo, setDropTimeTwo] = useState(null);
+  const [gameOverTwo, setGameOverTwo] = useState(false);
+  const [highScoresTwo, setHighScoresTwo] = useState([]);
+  const [playingTwo, setplayingTwo] = useState(true);
+
+  const [playerTwo, updatePlayerPosTwo, resetPlayerTwo, playerRotateTwo] = usePlayer();
+  const [stageTwo, setStageTwo, rowsClearedTwo] = useStage(playerTwo, resetPlayerTwo);
+  const [scoreTwo, setScoreTwo, rowsTwo, setRowsTwo, levelTwo, setLevelTwo] = useGameStatus(
+    rowsClearedTwo
+  );
+
+
 
   console.log('re-render');
   const StyledMuteButton = styled.button`
@@ -62,6 +82,21 @@ const Tetris = () => {
       // Activate the interval again when user releases down arrow.
       if (keyCode === 40) {
         setDropTime(1000 / (level + 1));
+      }
+    }
+  };
+
+  const movePlayerTwo = dir => {
+    if (!checkCollisionTwo(playerTwo, stageTwo, { x: dir, y: 0 })) {
+      updatePlayerPosTwo({ x: dir, y: 0 });
+    }
+  };
+
+  const keyUpTwo = ({ keyCode }) => {
+    if (!gameOver) {
+      // Activate the interval again when user releases down arrow.
+      if (keyCode === 40) {
+        setDropTimeTwo(1000 / (level + 1));
       }
     }
   };
@@ -141,6 +176,68 @@ const Tetris = () => {
     }
   };
 
+
+  const startGameTwo = () => {
+    // Reset everything
+    setStageTwo(createStageTwo());
+    setDropTimeTwo(1000);
+    resetPlayerTwo();
+    setScoreTwo(0);
+    setLevelTwo(0);
+    setRowsTwo(0);
+    setGameOverTwo(false);
+    
+  };
+
+  const dropTwo = () => {
+    // Increase level when player has cleared 10 rows
+    if (rows > (level + 1) * 10) {
+      setLevelTwo(prev => prev + 1);
+      // Also increase speed
+      setDropTimeTwo(1000 / (level + 1) + 200);
+    }
+
+    if (!checkCollisionTwo(playerTwo, stageTwo, { x: 0, y: 1 })) {
+      updatePlayerPosTwo({ x: 0, y: 1, collided: false });
+    } else {
+      // Game over!
+      if (playerTwo.pos.y < 1) {
+        console.log('GAME OVER!!!');
+        setGameOverTwo(true);
+        setDropTimeTwo(null);
+        setHighScoresTwo(prevScores => [...prevScores, scoreTwo]);
+      }
+      updatePlayerPosTwo({ x: 0, y: 0, collided: true });
+    }
+  };
+
+  const dropPlayerTwo = () => {
+    // We don't need to run the interval when we use the arrow down to
+    // move the tetromino downwards. So deactivate it for now.
+    setDropTimeTwo(null);
+    dropTwo();
+  };
+
+  // This one starts the game
+  // Custom hook by Dan Abramov
+  useInterval(() => {
+    dropTwo();
+  }, dropTimeTwo);
+
+  const moveTwo = ({ keyCode }) => {
+    if (!gameOver) {
+      if (keyCode === 37) {
+        movePlayerTwo(-1);
+      } else if (keyCode === 39) {
+        movePlayerTwo(1);
+      } else if (keyCode === 40) {
+        dropPlayerTwo();
+      } else if (keyCode === 38) {
+        playerRotateTwo(stageTwo, 1);
+      }
+    }
+  };
+
   return (
     <div>
   
@@ -148,6 +245,7 @@ const Tetris = () => {
       role="button"
       tabIndex="0"
       onKeyDown={e => move(e)}
+      
       onKeyUp={keyUp}
     >  <StyledHeader style={{ marginTop: '20px' }}>TETROMANIA</StyledHeader>
       <StyledTetris>
@@ -168,7 +266,7 @@ const Tetris = () => {
           <StartButton callback={startGame} />
           <StyledMuteButton onClick={stopMusic}> {playing ? "Mute" : "UnMute"}</StyledMuteButton>
         
-        </aside> <MultiplayerStage stage={stage} />
+        </aside> <MultiplayerStage stageTwo={stageTwo} /><StartButton callback={startGameTwo} />
         <div>
               <Display text={`Score: ${score}`} />
              
