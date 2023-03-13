@@ -1,4 +1,6 @@
 import React, { useState, useRef } from 'react';
+
+import {io} from 'socket.io-client';
 import styled from 'styled-components';
 import { createStageTwo, checkCollisionTwo } from '../gameHelpersTwo';
 import { createStage, checkCollision } from '../gameHelpers';
@@ -32,6 +34,8 @@ const Tetris = () => {
   const [gameOver, setGameOver] = useState(false);
   const [highScores, setHighScores] = useState([]);
   const [playing, setplaying] = useState(true);
+  
+  const socket = io('http://localhost:8080');
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
