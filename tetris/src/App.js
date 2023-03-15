@@ -10,10 +10,10 @@ function App() {
   const [highScores, setHighScores] = useState([]);
   return (
     <div className="App">
-      {currentPage === 'Tetris' && <Tetris />}
+      {currentPage === 'Tetris' && <Tetris currentPage={currentPage} setCurrentPage={setCurrentPage}/>}
       {currentPage === 'HighScores' && <HighScores highScores={highScores} />}
       {currentPage === 'Home' && <Home currentPage={currentPage} setCurrentPage={setCurrentPage} />}
-      {currentPage === 'MultiplayerTetris' && <MultiplayerTetris />}
+      {currentPage === 'MultiplayerTetris' && <MultiplayerTetris currentPage={currentPage} setCurrentPage={setCurrentPage} />}
 
     </div>
   );

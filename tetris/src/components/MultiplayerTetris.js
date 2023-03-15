@@ -1,10 +1,10 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import {io} from 'socket.io-client';
 import styled from 'styled-components';
 import { createStageTwo, checkCollisionTwo } from '../gameHelpersTwo';
 import { createStage, checkCollision } from '../gameHelpers';
-import { StyledTetrisWrapper, StyledTetris } from './styles/StyledTetris';
+import { StyledTetrisWrapper, StyledTetris2, StyledTetris} from './styles/StyledTetris';
 import { StyledHeader } from './styles/StyledHome';
 
 import jazz from '../audio/jazz.mp3';
@@ -29,13 +29,30 @@ import MultiplayerStage from './MultiplayerStage';
 
 
 const Tetris = () => {
+
+
+
+
+
   const [currentSong, setCurrentSong] = useState(jazz);
   const [dropTime, setDropTime] = useState(null);
   const [gameOver, setGameOver] = useState(false);
   const [highScores, setHighScores] = useState([]);
   const [playing, setplaying] = useState(true);
-  
-  const socket = io('http://localhost:8080');
+
+  const [displayMessage, setdisplayMessage] = useState("Connecting to server...");
+
+ 
+
+
+
+
+
+
+
+
+
+
 
   const [player, updatePlayerPos, resetPlayer, playerRotate] = usePlayer();
   const [stage, setStage, rowsCleared] = useStage(player, resetPlayer);
@@ -79,6 +96,7 @@ const Tetris = () => {
   const movePlayer = dir => {
     if (!checkCollision(player, stage, { x: dir, y: 0 })) {
       updatePlayerPos({ x: dir, y: 0 });
+      
     }
   };
 
@@ -177,6 +195,7 @@ const Tetris = () => {
         dropPlayer();
       } else if (keyCode === 38) {
         playerRotate(stage, 1);
+        
       }
     }
   };
@@ -247,7 +266,9 @@ const Tetris = () => {
   };
 
   return (
-    <div>
+    <div style={{ maxWidth: '1449px'}}onKeyDown={e => moveTwo(e)}
+
+        onKeyUp={keyUpTwo}>
 
       <StyledTetrisWrapper
         role="button"
@@ -256,11 +277,11 @@ const Tetris = () => {
 
         onKeyUp={keyUp}
       >  <StyledHeader style={{ marginTop: '20px' }}>TETROMANIA</StyledHeader>
-        <StyledTetris>
+        <StyledTetris style={{marginLeft:'180px'}}>
           <Stage stage={stage} />
 
 
-          <aside>
+          <aside >
             {gameOver ? (
               <Display gameOver={gameOver} text="Game Over" />
             ) : (
@@ -268,6 +289,7 @@ const Tetris = () => {
                 <Display text={`Score: ${score}`} />
                 <Display text={`rows: ${rows}`} />
                 <Display text={`Level: ${level}`} />
+              
               </div>
             )}
 
@@ -275,20 +297,33 @@ const Tetris = () => {
             <StyledMuteButton onClick={stopMusic}> {playing ? "Mute" : "UnMute"}</StyledMuteButton>
 
           </aside>
-          <div role="button"
-        tabIndex="0"
-        onKeyDown={e => moveTwo(e)}
+          </StyledTetris>
+           </StyledTetrisWrapper>
+           
+            
+<StyledTetris2 
+        className='overlay'>
+           <MultiplayerStage  stageTwo={stageTwo}  role="button"
+           />
+            <aside style={{marginTop:'-640px'}}> 
+            {gameOver ? (
+              <Display gameOver={gameOver} text="Game Over" />
+            ) : (
+              <div>
+                <Display text={`Score: ${scoreTwo}`} />
+                <Display text={`rows: ${rowsTwo}`} />
+                <Display text={`Level: ${levelTwo}`} />
+               
+              </div>
+            )}
+           <StartButton callback={startGameTwo} />
+           </aside></StyledTetris2>
+          
+          
+          </div>
+        
 
-        onKeyUp={keyUpTwo}>
-           <MultiplayerStage stageTwo={stageTwo} role="button"
-           /><StartButton callback={startGameTwo} />
-          <div>
-            <Display text={`Score: ${score}`} />
-
-          </div></div>
-        </StyledTetris>
-
-      </StyledTetrisWrapper></div>
+     
   );
 };
 

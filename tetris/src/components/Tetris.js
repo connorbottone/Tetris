@@ -168,7 +168,8 @@ const Tetris = () => {
         </aside>
       </StyledTetris>
       
-    </StyledTetrisWrapper></div>
+    </StyledTetrisWrapper>
+    </div>
   );
 };
 
